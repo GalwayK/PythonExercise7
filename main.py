@@ -1,5 +1,6 @@
 import streamlit
 import plotly.express as express
+import backend
 
 
 def get_data(day_count):
@@ -23,6 +24,6 @@ if __name__ == "__main__":
     if place:
         streamlit.subheader(f"{option_forecast} for the next {number_of_days} days in {place}.")
 
-        date_list, temp_list = get_data(number_of_days)
+        date_list, temp_list = backend.get_data(place, number_of_days, option_forecast)
         plotly_figure = express.line(x=date_list, y=temp_list, labels={"x": "Date", "y": "Temperature"})
         streamlit.plotly_chart(plotly_figure)
