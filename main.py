@@ -23,7 +23,12 @@ if __name__ == "__main__":
 
     if place:
         streamlit.subheader(f"{option_forecast} for the next {number_of_days} days in {place}.")
-
-        date_list, temp_list = backend.get_data(place, number_of_days, option_forecast)
-        plotly_figure = express.line(x=date_list, y=temp_list, labels={"x": "Date", "y": "Temperature"})
-        streamlit.plotly_chart(plotly_figure)
+        data = backend.get_data(place, number_of_days, option_forecast)
+        if data is None:
+            pass
+        elif option_forecast == "Temperature":
+            plotly_figure = express.line(x=data.keys(), y=data.values(), labels={"x": "Date", "y": "Temperature"})
+            streamlit.plotly_chart(plotly_figure)
+        elif option_forecast == "Sky":
+            image_paths = [f"files/images/{image}.png" for image in data.values()]
+            streamlit.image(image_paths, width=150, caption=list(data.keys()))
